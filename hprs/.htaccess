@@ -1,0 +1,9 @@
+# Deny direct browser access to non-public application code.
+<FilesMatch "\.(env|sql|md)$">
+    Require all denied
+</FilesMatch>
+
+RewriteEngine On
+RewriteRule ^config/ - [F,L]
+RewriteRule ^database/ - [F,L]
+RewriteRule ^includes/ - [F,L]
