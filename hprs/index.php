@@ -1,6 +1,14 @@
 <?php
 require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/functions.php';
+
+$stmt = hprs_db()->query(
+    'SELECT j.*, c.name AS company_name FROM jobs j
+     JOIN companies c ON c.id = j.company_id
+     WHERE j.status = "open" ORDER BY j.created_at DESC LIMIT 3'
+);
+$featuredJobs = $stmt->fetchAll();
 
 $page_title = 'Hospitality Recruitment and Placement | Hospitality Jobs & Talent';
 $page_description = 'Hospitality Recruitment and Placement connects hospitality job seekers with hotels, restaurants, resorts and hospitality employers across Nigeria.';
@@ -126,66 +134,39 @@ require __DIR__ . '/includes/header.php';
             <h2>Featured Hospitality Jobs</h2>
         </div>
 
-        <div class="notice" style="max-width:640px;margin:0 auto var(--space-8);">
-            <strong>Coming soon —</strong>&nbsp;live job listings go live once the Job Posting &amp; Search pages are built in the next foundation step. The cards below show the layout using sample data only.
-        </div>
-
-        <div class="grid-3">
-            <div class="card job-card">
-                <div class="job-card__top">
-                    <div>
-                        <h3 class="job-card__title">Front Office Manager</h3>
-                        <p class="job-card__company">Sample Hotel Group &middot; Lagos</p>
-                    </div>
-                    <span class="badge badge--open">Open</span>
-                </div>
-                <div class="job-card__meta">
-                    <span>&#8358;250,000&ndash;&#8358;350,000</span>
-                    <span>4+ yrs experience</span>
-                    <span>Full-time</span>
-                </div>
-                <div class="job-card__footer">
-                    <span class="badge badge--soon">Sample data</span>
-                    <a href="<?= url('register-job-seeker.php') ?>" class="btn btn--ghost">Apply</a>
-                </div>
+        <?php if (!$featuredJobs): ?>
+            <div class="notice" style="max-width:640px;margin:0 auto;">
+                No open jobs yet &mdash; be the first to <a href="<?= url('register-recruiter.php') ?>">post one as a recruiter</a>.
             </div>
-            <div class="card job-card">
-                <div class="job-card__top">
-                    <div>
-                        <h3 class="job-card__title">Executive Chef</h3>
-                        <p class="job-card__company">Sample Resort &middot; Abuja</p>
+        <?php else: ?>
+            <div class="grid-3">
+                <?php foreach ($featuredJobs as $job): ?>
+                    <div class="card job-card">
+                        <div class="job-card__top">
+                            <div>
+                                <h3 class="job-card__title"><?= e($job['title']) ?></h3>
+                                <p class="job-card__company"><?= e($job['company_name']) ?> &middot; <?= e($job['location']) ?></p>
+                            </div>
+                            <span class="badge badge--open">Open</span>
+                        </div>
+                        <div class="job-card__meta">
+                            <?php if ($job['salary_min'] || $job['salary_max']): ?>
+                                <span>&#8358;<?= number_format((int) $job['salary_min']) ?>&ndash;&#8358;<?= number_format((int) $job['salary_max']) ?></span>
+                            <?php endif; ?>
+                            <?php if ($job['experience_required']): ?>
+                                <span><?= (int) $job['experience_required'] ?>+ yrs experience</span>
+                            <?php endif; ?>
+                            <span><?= e(ucwords(str_replace('_', ' ', $job['employment_type']))) ?></span>
+                        </div>
+                        <div class="job-card__footer">
+                            <span class="badge badge--soon"><?= e($job['category']) ?></span>
+                            <a href="<?= url('job.php?id=' . $job['id']) ?>" class="btn btn--ghost">View &amp; Apply</a>
+                        </div>
                     </div>
-                    <span class="badge badge--open">Open</span>
-                </div>
-                <div class="job-card__meta">
-                    <span>&#8358;300,000&ndash;&#8358;450,000</span>
-                    <span>6+ yrs experience</span>
-                    <span>Full-time</span>
-                </div>
-                <div class="job-card__footer">
-                    <span class="badge badge--soon">Sample data</span>
-                    <a href="<?= url('register-job-seeker.php') ?>" class="btn btn--ghost">Apply</a>
-                </div>
+                <?php endforeach; ?>
             </div>
-            <div class="card job-card">
-                <div class="job-card__top">
-                    <div>
-                        <h3 class="job-card__title">Housekeeping Supervisor</h3>
-                        <p class="job-card__company">Sample Hospitality Group &middot; Port Harcourt</p>
-                    </div>
-                    <span class="badge badge--open">Open</span>
-                </div>
-                <div class="job-card__meta">
-                    <span>&#8358;150,000&ndash;&#8358;220,000</span>
-                    <span>2+ yrs experience</span>
-                    <span>Full-time</span>
-                </div>
-                <div class="job-card__footer">
-                    <span class="badge badge--soon">Sample data</span>
-                    <a href="<?= url('register-job-seeker.php') ?>" class="btn btn--ghost">Apply</a>
-                </div>
-            </div>
-        </div>
+            <p style="text-align:center;margin-top:var(--space-6);"><a href="<?= url('jobs.php') ?>" class="btn btn--navy">Browse All Jobs</a></p>
+        <?php endif; ?>
     </div>
 </section>
 

@@ -36,6 +36,16 @@ if ($isRecruiter) {
         $totalApplications = (int) $stmt->fetchColumn();
     }
 
+    $recentJobs = [];
+    if ($company) {
+        $stmt = $pdo->prepare(
+            'SELECT id, title, location, status, applications_count, created_at
+             FROM jobs WHERE company_id = ? ORDER BY created_at DESC LIMIT 5'
+        );
+        $stmt->execute([$company['company_id']]);
+        $recentJobs = $stmt->fetchAll();
+    }
+
     $navItems = [
         ['label' => 'Dashboard', 'href' => url('dashboard.php'), 'active' => true],
         ['label' => 'Jobs', 'href' => url('jobs.php'), 'active' => false],
@@ -57,12 +67,24 @@ if ($isRecruiter) {
     $profile = $stmt->fetch();
 
     $counts = ['applied' => 0, 'screening' => 0, 'shortlisted' => 0, 'interview' => 0, 'offer' => 0, 'hired' => 0];
+    $myApplications = [];
     if ($profile) {
         $stmt = $pdo->prepare('SELECT status, COUNT(*) AS c FROM applications WHERE candidate_id = ? GROUP BY status');
         $stmt->execute([$profile['id']]);
         foreach ($stmt->fetchAll() as $row) {
             $counts[$row['status']] = (int) $row['c'];
         }
+
+        $stmt = $pdo->prepare(
+            'SELECT a.status, a.applied_at, j.id AS job_id, j.title, c.name AS company_name
+             FROM applications a
+             JOIN jobs j ON j.id = a.job_id
+             JOIN companies c ON c.id = j.company_id
+             WHERE a.candidate_id = ?
+             ORDER BY a.applied_at DESC LIMIT 5'
+        );
+        $stmt->execute([$profile['id']]);
+        $myApplications = $stmt->fetchAll();
     }
 
     $navItems = [
@@ -125,8 +147,25 @@ require __DIR__ . '/includes/header.php';
                         <a href="<?= url('plans-pricing.php') ?>" class="btn btn--ghost">Manage Plan</a>
                     </div>
 
+                    <div class="card" style="margin-top:var(--space-6);">
+                        <h3>Your Job Postings</h3>
+                        <?php if (!$recentJobs): ?>
+                            <p>You haven't posted any jobs yet.</p>
+                        <?php else: ?>
+                            <?php foreach ($recentJobs as $job): ?>
+                                <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;border-bottom:1px solid var(--color-border);">
+                                    <div>
+                                        <a href="<?= url('job.php?id=' . $job['id']) ?>" style="font-weight:600;color:var(--color-navy);"><?= e($job['title']) ?></a>
+                                        <div style="font-size:var(--fs-xs);color:var(--color-text-muted);"><?= e($job['location']) ?> &middot; <?= (int) $job['applications_count'] ?> application<?= $job['applications_count'] == 1 ? '' : 's' ?></div>
+                                    </div>
+                                    <span class="badge badge--<?= $job['status'] === 'open' ? 'open' : 'soon' ?>"><?= e(ucfirst($job['status'])) ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+
                     <div class="dash-quick-actions">
-                        <a href="<?= url('jobs.php') ?>" class="btn btn--navy">Post a Job</a>
+                        <a href="<?= url('post-job.php') ?>" class="btn btn--navy">Post a Job</a>
                         <span class="btn btn--ghost" aria-disabled="true">Search Candidates <span class="badge badge--soon">Soon</span></span>
                     </div>
                 <?php endif; ?>
@@ -145,6 +184,23 @@ require __DIR__ . '/includes/header.php';
                     <div class="card stat-card"><div class="stat-card__value"><?= $counts['interview'] ?></div><div class="stat-card__label">Interviews</div></div>
                     <div class="card stat-card"><div class="stat-card__value"><?= $counts['offer'] ?></div><div class="stat-card__label">Offers</div></div>
                     <div class="card stat-card"><div class="stat-card__value"><?= $counts['hired'] ?></div><div class="stat-card__label">Hired</div></div>
+                </div>
+
+                <div class="card" style="margin-top:var(--space-6);">
+                    <h3>My Applications</h3>
+                    <?php if (!$myApplications): ?>
+                        <p>You haven't applied to any jobs yet.</p>
+                    <?php else: ?>
+                        <?php foreach ($myApplications as $app): ?>
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;border-bottom:1px solid var(--color-border);">
+                                <div>
+                                    <a href="<?= url('job.php?id=' . $app['job_id']) ?>" style="font-weight:600;color:var(--color-navy);"><?= e($app['title']) ?></a>
+                                    <div style="font-size:var(--fs-xs);color:var(--color-text-muted);"><?= e($app['company_name']) ?> &middot; Applied <?= e(date('M j, Y', strtotime($app['applied_at']))) ?></div>
+                                </div>
+                                <span class="badge badge--<?= in_array($app['status'], ['hired','offer'], true) ? 'open' : 'match' ?>"><?= e(ucfirst($app['status'])) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
 
                 <div class="notice" style="margin-top:var(--space-6);">AI-recommended jobs will appear here once the AI matching engine (Phase 2) is connected. Nothing fake is shown in the meantime.</div>
