@@ -1,0 +1,48 @@
+.dash { background: var(--color-bg); padding: var(--space-8) 0 var(--space-10); min-height: 70vh; }
+.dash__inner { display: grid; grid-template-columns: 260px 1fr; gap: var(--space-6); align-items: start; }
+
+.dash-sidebar {
+    background: var(--color-navy);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    position: sticky;
+    top: calc(var(--space-6) + 60px);
+}
+.dash-sidebar__user { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-5); padding-bottom: var(--space-5); border-bottom: 1px solid rgba(255,255,255,0.12); }
+.dash-sidebar__avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--color-gold); color: var(--color-navy);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; flex-shrink: 0;
+}
+.dash-sidebar__user strong { display: block; color: var(--color-white); font-size: var(--fs-sm); }
+.dash-sidebar__user span { font-size: var(--fs-xs); color: rgba(255,255,255,0.6); }
+
+.dash-nav { display: flex; flex-direction: column; gap: 2px; }
+.dash-nav__item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.75);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+}
+.dash-nav__item:hover { background: rgba(255,255,255,0.06); color: var(--color-white); }
+.dash-nav__item.is-active { background: var(--color-gold); color: var(--color-navy); }
+.dash-nav__item--soon { cursor: default; opacity: 0.55; }
+.dash-nav__item--soon em { font-style: normal; font-size: 0.65rem; background: rgba(255,255,255,0.12); padding: 2px 6px; border-radius: 999px; }
+.dash-nav__item--logout { margin-top: var(--space-4); border-top: 1px solid rgba(255,255,255,0.12); padding-top: var(--space-4); color: rgba(255,255,255,0.6); }
+
+.dash-main h1 { margin-bottom: var(--space-1); }
+.dash-stats { margin-top: var(--space-6); }
+.dash-quick-actions { display: flex; gap: var(--space-3); margin-top: var(--space-6); flex-wrap: wrap; }
+.dash-quick-actions .btn[aria-disabled] { opacity: 0.6; cursor: not-allowed; }
+
+.progress-bar { height: 8px; background: var(--color-border); border-radius: 999px; overflow: hidden; margin: var(--space-3) 0; }
+.progress-bar__fill { height: 100%; background: var(--color-gold); border-radius: 999px; }
+
+@media (max-width: 900px) {
+    .dash__inner { grid-template-columns: 1fr; }
+    .dash-sidebar { position: static; }
+    .dash-nav { flex-direction: row; flex-wrap: wrap; }
+}

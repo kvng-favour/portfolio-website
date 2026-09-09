@@ -12,24 +12,78 @@ require __DIR__ . '/includes/header.php';
 <section class="hero">
     <div class="container hero__inner">
         <div>
-            <h1>Are you seeking the perfect job or candidate in the hospitality industry?</h1>
-            <p class="hero__lead">Join our community today. We connect verified hospitality talent with hotels, restaurants, resorts, catering and event companies.</p>
-            <div class="hero__ctas">
-                <a href="<?= url('register-job-seeker.php') ?>" class="btn btn--primary btn--lg">Find a Job</a>
-                <a href="<?= url('register-recruiter.php') ?>" class="btn btn--outline-light btn--lg">Find Talent</a>
+            <h1>Connecting Great Talent<br><span class="accent">with Great Opportunities</span></h1>
+            <p class="hero__lead">The leading hospitality recruitment platform connecting qualified professionals with top employers worldwide.</p>
+
+            <div class="hero__paths">
+                <div class="path-card">
+                    <div class="path-card__icon" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2"/></svg>
+                    </div>
+                    <h3>I'm a Job Seeker</h3>
+                    <p>Find your next career opportunity in the hospitality industry.</p>
+                    <a href="<?= url('register-job-seeker.php') ?>" class="btn btn--navy">Find a Job &rarr;</a>
+                </div>
+                <div class="path-card">
+                    <div class="path-card__icon" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="18" height="12" rx="1" stroke="currentColor" stroke-width="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2" stroke="currentColor" stroke-width="2"/></svg>
+                    </div>
+                    <h3>I'm an Employer</h3>
+                    <p>Hire the best talent for your team and grow your business.</p>
+                    <a href="<?= url('register-recruiter.php') ?>" class="btn btn--gold">Post a Job &rarr;</a>
+                </div>
             </div>
         </div>
-        <div class="hero__paths">
-            <div class="hero__path">
-                <h3>Job Seekers</h3>
-                <p>Find your perfect job now! Build a profile once and get matched to hospitality roles that fit you.</p>
-                <a href="<?= url('register-job-seeker.php') ?>" class="btn btn--gold">Get Started!</a>
+
+        <div class="hero__visual">
+            <div class="hero__photo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" stroke="currentColor" stroke-width="1.5"/></svg>
+                <span class="hero__photo-label">Photography placeholder — swap in licensed hospitality photography</span>
             </div>
-            <div class="hero__path">
-                <h3>Recruiters</h3>
-                <p>Find the perfect candidate now! Post a vacancy and reach our pool of background-checked hospitality professionals.</p>
-                <a href="<?= url('register-recruiter.php') ?>" class="btn btn--primary">Get Started!</a>
+
+            <div class="hero__stats">
+                <div class="hero__stat">
+                    <span class="hero__stat-icon" aria-hidden="true">&#128101;</span>
+                    <div><strong>25,000+</strong><span>Qualified Candidates</span></div>
+                </div>
+                <div class="hero__stat">
+                    <span class="hero__stat-icon" aria-hidden="true">&#127976;</span>
+                    <div><strong>3,500+</strong><span>Hospitality Employers</span></div>
+                </div>
+                <div class="hero__stat">
+                    <span class="hero__stat-icon" aria-hidden="true">&#9989;</span>
+                    <div><strong>8,200+</strong><span>Successful Placements</span></div>
+                </div>
+                <div class="hero__stat">
+                    <span class="hero__stat-icon" aria-hidden="true">&#127760;</span>
+                    <div><strong>25+</strong><span>Countries Served</span></div>
+                </div>
             </div>
+
+            <div class="hero__promo">
+                <h4>Build Your Dream Team</h4>
+                <p>Find the best hospitality talent, quickly and easily.</p>
+                <a href="<?= url('register-recruiter.php') ?>" class="btn btn--navy">Post a Job Now &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-features container">
+        <div class="hero-feature">
+            <div class="hero-feature__icon" aria-hidden="true">&#129504;</div>
+            <div><h4>AI-Powered Matching</h4><p>Smarter matches, faster.</p></div>
+        </div>
+        <div class="hero-feature">
+            <div class="hero-feature__icon" aria-hidden="true">&#128737;</div>
+            <div><h4>Verified &amp; Background Checked</h4><p>Trusted, safer hires.</p></div>
+        </div>
+        <div class="hero-feature">
+            <div class="hero-feature__icon" aria-hidden="true">&#9889;</div>
+            <div><h4>Faster Hiring</h4><p>Reduce time to hire.</p></div>
+        </div>
+        <div class="hero-feature">
+            <div class="hero-feature__icon" aria-hidden="true">&#128172;</div>
+            <div><h4>Dedicated Support</h4><p>We're with you every step.</p></div>
         </div>
     </div>
 </section>

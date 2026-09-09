@@ -29,8 +29,16 @@ $page_description = $page_description ?? 'Hospitality Recruitment and Placement 
 <header class="site-header">
     <div class="site-header__inner container">
         <a class="brand" href="<?= url() ?>">
-            <span class="brand__mark">HR<span class="brand__mark-accent">&amp;</span>P</span>
-            <span class="brand__name">Hospitality<br>Recruitment &amp; Placement</span>
+            <span class="brand__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2 3 7v2h18V7l-9-5Z" fill="currentColor"/>
+                    <path d="M4 10v9h4v-6h8v6h4v-9H4Z" fill="currentColor"/>
+                </svg>
+            </span>
+            <span class="brand__text">
+                <span class="brand__mark">HPRS</span>
+                <span class="brand__name">Hospitality Recruitment &amp; Placement</span>
+            </span>
         </a>
 
         <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Toggle navigation">
@@ -40,9 +48,12 @@ $page_description = $page_description ?? 'Hospitality Recruitment and Placement 
         <nav class="site-nav" id="siteNav">
             <ul>
                 <li><a href="<?= url() ?>">Home</a></li>
-                <li><a href="<?= url('about.php') ?>">About Us</a></li>
+                <li><a href="<?= url('jobs.php') ?>">Find a Job</a></li>
+                <li><a href="<?= url('register-recruiter.php') ?>">For Employers</a></li>
+                <li><a href="<?= url('register-job-seeker.php') ?>">For Job Seekers</a></li>
                 <li><a href="<?= url('plans-pricing.php') ?>">Plans &amp; Pricing</a></li>
                 <li><a href="<?= url('black-listed-employees.php') ?>">Black Listed Employees</a></li>
+                <li><a href="<?= url('about.php') ?>">About Us</a></li>
             </ul>
             <div class="site-nav__actions">
                 <?php if (is_logged_in()): ?>
@@ -50,7 +61,7 @@ $page_description = $page_description ?? 'Hospitality Recruitment and Placement 
                 <?php else: ?>
                     <a class="btn btn--ghost" href="<?= url('login.php') ?>">Login</a>
                     <div class="dropdown">
-                        <button class="btn btn--primary dropdown__toggle" type="button">Register</button>
+                        <button class="btn btn--gold dropdown__toggle" type="button">Sign Up</button>
                         <div class="dropdown__menu">
                             <a href="<?= url('register-job-seeker.php') ?>">Register as a Job Seeker</a>
                             <a href="<?= url('register-recruiter.php') ?>">Register as a Recruiter</a>
